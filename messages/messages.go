@@ -218,3 +218,23 @@ func ParseClearHistory(obj interface{}) (msg ClearHistory) {
 	msg.Channel, _ = mp["channel"].(string)
 	return
 }
+
+// WhoisData contains WHOIS information
+type WhoisData struct {
+	Channels   map[string]string `json:"channels"`
+	Nick       string            `json:"nick"`
+	User       string            `json:"user"`
+	Host       string            `json:"host"`
+	RealName   string            `json:"realname"`
+	Away       string            `json:"away"`
+	Server     string            `json:"server"`
+	ServerInfo string            `json:"server-info"`
+	IdleTime   int64             `json:"idle"`
+	SecureConn bool              `json:"secure-connection"`
+	Operator   bool              `json:"operator"`
+}
+
+// ParseWhoisData parses a WhoisData object from a generic object
+func ParseWhoisData(obj interface{}) (msg WhoisData) {
+	return
+}
