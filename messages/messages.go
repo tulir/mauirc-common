@@ -36,10 +36,23 @@ const (
 	MsgOpen        = "open"
 )
 
-// Message is a basic wrapper for a type string and the actual message object
-type Message struct {
+// Container is a basic wrapper for a type string and the actual message object
+type Container struct {
 	Type   string      `json:"type"`
 	Object interface{} `json:"object"`
+}
+
+// Message wraps an IRC message
+type Message struct {
+	ID        int64    `json:"id"`
+	Network   string   `json:"network"`
+	Channel   string   `json:"channel"`
+	Timestamp int64    `json:"timestamp"`
+	Sender    string   `json:"sender"`
+	Command   string   `json:"command"`
+	Message   string   `json:"message"`
+	OwnMsg    bool     `json:"ownmsg"`
+	Preview   *Preview `json:"preview"`
 }
 
 // RawMessage is a raw IRC message
