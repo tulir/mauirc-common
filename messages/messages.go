@@ -236,5 +236,26 @@ type WhoisData struct {
 
 // ParseWhoisData parses a WhoisData object from a generic object
 func ParseWhoisData(obj interface{}) (msg WhoisData) {
+	mp, ok := obj.(map[string]interface{})
+	if !ok {
+		return
+	}
+
+	chlist, _ := mp["channels"].(map[string]interface{})
+	msg.Channels = make(map[string]string)
+	for ch, role := range chlist {
+		msg.Channels[ch], _ = role.(string)
+	}
+
+	msg.Nick, _ = mp["nick"].(string)
+	msg.User, _ = mp["user"].(string)
+	msg.Host, _ = mp["host"].(string)
+	msg.RealName, _ = mp["realname"].(string)
+	msg.Away, _ = mp["away"].(string)
+	msg.Server, _ = mp["server"].(string)
+	msg.ServerInfo, _ = mp["server-info"].(string)
+	msg.IdleTime, _ = mp["idle"].(int64)
+	msg.SecureConn, _ = mp["secure-connection"].(bool)
+	msg.Operator, _ = mp["operator"].(bool)
 	return
 }
