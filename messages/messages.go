@@ -52,7 +52,29 @@ type Message struct {
 	Command   string   `json:"command"`
 	Message   string   `json:"message"`
 	OwnMsg    bool     `json:"ownmsg"`
-	Preview   *Preview `json:"preview"`
+	Preview   *Preview `json:"preview,omitempty"`
+}
+
+// ParseMessage parses a Message object from a generic object
+func ParseMessage(obj interface{}) (msg Message) {
+	mp, ok := obj.(map[string]interface{})
+	if !ok {
+		return
+	}
+
+	msg.ID, _ = mp["id"].(int64)
+	msg.Timestamp, _ = mp["timestamp"].(int64)
+	msg.Network, _ = mp["network"].(string)
+	msg.Channel, _ = mp["channel"].(string)
+	msg.Sender, _ = mp["sender"].(string)
+	msg.Command, _ = mp["command"].(string)
+	msg.Message, _ = mp["message"].(string)
+	msg.OwnMsg, _ = mp["ownmsg"].(bool)
+	pw, ok := mp["preview"]
+	if ok {
+		msg.Preview = ParsePreview(pw)
+	}
+	return
 }
 
 // RawMessage is a raw IRC message

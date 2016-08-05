@@ -23,11 +23,47 @@ type Preview struct {
 	Image *Image `json:"image,omitempty"`
 }
 
+// ParsePreview parses a Preview object from a generic object
+func ParsePreview(obj interface{}) *Preview {
+	mp, ok := obj.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	var pw Preview
+
+	txt, ok := mp["text"]
+	if ok {
+		pw.Text = ParseText(txt)
+	}
+
+	img, ok := mp["image"]
+	if ok {
+		pw.Image = ParseImage(img)
+	}
+
+	return &pw
+}
+
 // Text is some text to preview
 type Text struct {
 	Title       string `json:"title,omitempty"`
 	Description string `json:"description,omitempty"`
 	SiteName    string `json:"sitename,omitempty"`
+}
+
+// ParseText parses a Text object from a generic object
+func ParseText(obj interface{}) *Text {
+	mp, ok := obj.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	var txt Text
+	txt.Title, _ = mp["title"].(string)
+	txt.Description, _ = mp["description"].(string)
+	txt.SiteName, _ = mp["sitename"].(string)
+	return &txt
 }
 
 // Image is an image to preview
@@ -36,4 +72,19 @@ type Image struct {
 	Type   string `json:"type"`
 	Width  uint64 `json:"width"`
 	Height uint64 `json:"height"`
+}
+
+// ParseImage parses an Image object from a generic object
+func ParseImage(obj interface{}) *Image {
+	mp, ok := obj.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	var img Image
+	img.URL, _ = mp["url"].(string)
+	img.Type, _ = mp["type"].(string)
+	img.Width, _ = mp["width"].(uint64)
+	img.Height, _ = mp["height"].(uint64)
+	return &img
 }
