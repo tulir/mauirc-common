@@ -230,6 +230,7 @@ type WhoisData struct {
 	Server     string            `json:"server"`
 	ServerInfo string            `json:"server-info"`
 	IdleTime   int64             `json:"idle"`
+	Idle       string            `json:"-"`
 	SecureConn bool              `json:"secure-connection"`
 	Operator   bool              `json:"operator"`
 }
