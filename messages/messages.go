@@ -260,3 +260,74 @@ func ParseWhoisData(obj interface{}) (msg WhoisData) {
 	msg.Operator, _ = mp["operator"].(bool)
 	return
 }
+
+// DeleteMessage contains information about which message to delete
+type DeleteMessage int64
+
+// ParseDeleteMessage parses a DeleteMessage object from a generic object
+func ParseDeleteMessage(obj interface{}) (msg DeleteMessage) {
+	mp, _ := obj.(int64)
+	return DeleteMessage(mp)
+}
+
+// OpenCloseChannel contains information about which channel to close
+type OpenCloseChannel struct {
+	Network string `json:"network"`
+	Channel string `json:"channel"`
+}
+
+// ParseOpenCloseChannel parses a OpenCloseChannel object from a generic object
+func ParseOpenCloseChannel(obj interface{}) (msg OpenCloseChannel) {
+	mp, ok := obj.(map[string]interface{})
+	if !ok {
+		return
+	}
+
+	msg.Network, _ = mp["network"].(string)
+	msg.Channel, _ = mp["channel"].(string)
+	return
+}
+
+// Kick contains information about who to kick
+type Kick struct {
+	Network string `json:"network"`
+	Channel string `json:"channel"`
+	User    string `json:"user"`
+	Message string `json:"message"`
+}
+
+// ParseKick parses a Kick object from a generic object
+func ParseKick(obj interface{}) (msg Kick) {
+	mp, ok := obj.(map[string]interface{})
+	if !ok {
+		return
+	}
+
+	msg.Network, _ = mp["network"].(string)
+	msg.Channel, _ = mp["channel"].(string)
+	msg.User, _ = mp["users"].(string)
+	msg.Message, _ = mp["message"].(string)
+	return
+}
+
+// Mode contains information about who to kick
+type Mode struct {
+	Network string `json:"network"`
+	Channel string `json:"channel"`
+	Message string `json:"message"`
+	Args    string `json:"args"`
+}
+
+// ParseMode parses a Mode object from a generic object
+func ParseMode(obj interface{}) (msg Mode) {
+	mp, ok := obj.(map[string]interface{})
+	if !ok {
+		return
+	}
+
+	msg.Network, _ = mp["network"].(string)
+	msg.Channel, _ = mp["channel"].(string)
+	msg.Message, _ = mp["message"].(string)
+	msg.Args, _ = mp["args"].(string)
+	return
+}
