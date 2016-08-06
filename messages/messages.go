@@ -331,3 +331,59 @@ func ParseMode(obj interface{}) (msg Mode) {
 	msg.Args, _ = mp["args"].(string)
 	return
 }
+
+// ModelistEntry contains a mode and a target
+type ModelistEntry struct {
+	Mode   rune   `json:"mode"`
+	Target string `json:"target"`
+}
+
+// ParseModelistEntry parses a ModelistEntry object from a generic object
+func ParseModelistEntry(obj interface{}) (msg ModelistEntry) {
+	mp, ok := obj.(map[string]interface{})
+	if !ok {
+		return
+	}
+
+	mode, _ := mp["mode"].(string)
+	if len(mode) > 0 {
+		msg.Mode = rune(mode[0])
+	}
+
+	msg.Target, _ = mp["target"].(string)
+	return
+}
+
+// ChanData contains channel information
+type ChanData struct {
+	Network    string          `json:"network"`
+	Name       string          `json:"name"`
+	Userlist   []string        `json:"userlist"`
+	Topic      string          `json:"topic"`
+	TopicSetBy string          `json:"topicsetby"`
+	TopicSetAt int64           `json:"topicsetat"`
+	Modelist   []ModelistEntry `json:"modes"`
+}
+
+// ParseChanData parses a ChanData object from a generic object
+func ParseChanData(obj interface{}) (msg ChanData) {
+	mp, ok := obj.(map[string]interface{})
+	if !ok {
+		return
+	}
+
+	msg.Network, _ = mp["network"].(string)
+	msg.Name, _ = mp["name"].(string)
+	msg.Userlist, _ = mp["userlist"].([]string)
+	msg.Topic, _ = mp["topic"].(string)
+	msg.TopicSetBy, _ = mp["topicsetby"].(string)
+	msg.TopicSetAt, _ = mp["topicsetat"].(int64)
+
+	ml, _ := mp["modes"].([]interface{})
+	msg.Modelist = make([]ModelistEntry, len(ml))
+	for i, mod := range ml {
+		msg.Modelist[i] = ParseModelistEntry(mod)
+	}
+
+	return
+}
