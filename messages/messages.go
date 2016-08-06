@@ -44,14 +44,14 @@ type Container struct {
 
 // Message wraps an IRC message
 type Message struct {
-	ID        int64    `json:"id"`
+	ID        int64    `json:"id,omitempty"`
 	Network   string   `json:"network"`
 	Channel   string   `json:"channel"`
-	Timestamp int64    `json:"timestamp"`
-	Sender    string   `json:"sender"`
+	Timestamp int64    `json:"timestamp,omitempty"`
+	Sender    string   `json:"sender,omitempty"`
 	Command   string   `json:"command"`
 	Message   string   `json:"message"`
-	OwnMsg    bool     `json:"ownmsg"`
+	OwnMsg    bool     `json:"ownmsg,omitempty"`
 	Preview   *Preview `json:"preview,omitempty"`
 }
 
