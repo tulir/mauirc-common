@@ -19,21 +19,20 @@ package messages
 
 // Message types
 const (
-	MsgRaw         = "raw"
-	MsgInvite      = "invite"
-	MsgNickChange  = "nickchange"
-	MsgNetData     = "netdata"
-	MsgChanData    = "chandata"
-	MsgWhois       = "whois"
-	MsgClear       = "clear"
-	MsgDelete      = "delete"
-	MsgChanList    = "chanlist"
-	MsgCmdResponse = "cmdresponse"
-	MsgMessage     = "message"
-	MsgKick        = "kick"
-	MsgMode        = "mode"
-	MsgClose       = "close"
-	MsgOpen        = "open"
+	MsgRaw        = "raw"
+	MsgInvite     = "invite"
+	MsgNickChange = "nickchange"
+	MsgNetData    = "netdata"
+	MsgChanData   = "chandata"
+	MsgWhois      = "whois"
+	MsgClear      = "clear"
+	MsgDelete     = "delete"
+	MsgChanList   = "chanlist"
+	MsgMessage    = "message"
+	MsgKick       = "kick"
+	MsgMode       = "mode"
+	MsgClose      = "close"
+	MsgOpen       = "open"
 )
 
 // Container is a basic wrapper for a type string and the actual message object
@@ -178,26 +177,6 @@ func ParseInvite(obj interface{}) (msg Invite) {
 	msg.Network, _ = mp["network"].(string)
 	msg.Channel, _ = mp["channel"].(string)
 	msg.Sender, _ = mp["sender"].(string)
-	return
-}
-
-// CommandResponse is a response to an user-sent internal command
-type CommandResponse struct {
-	Success       bool   `json:"success"`
-	SimpleMessage string `json:"simple-message"`
-	Message       string `json:"message"`
-}
-
-// ParseCommandResponse parses a CommandResponse object from a generic object
-func ParseCommandResponse(obj interface{}) (msg CommandResponse) {
-	mp, ok := obj.(map[string]interface{})
-	if !ok {
-		return
-	}
-
-	msg.Success, _ = mp["success"].(bool)
-	msg.SimpleMessage, _ = mp["simple-message"].(string)
-	msg.Message, _ = mp["message"].(string)
 	return
 }
 
