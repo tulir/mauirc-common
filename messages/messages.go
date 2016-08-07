@@ -17,6 +17,11 @@
 // Package messages contains mauIRC client <-> server messages
 package messages
 
+import (
+	"encoding/json"
+	"strconv"
+)
+
 // Message types
 const (
 	MsgRaw        = "raw"
@@ -61,8 +66,10 @@ func ParseMessage(obj interface{}) (msg Message) {
 		return
 	}
 
-	msg.ID, _ = mp["id"].(int64)
-	msg.Timestamp, _ = mp["timestamp"].(int64)
+	id, _ := mp["id"].(json.Number)
+	msg.ID, _ = strconv.ParseInt(string(id), 10, 64)
+	timestamp, _ := mp["timestamp"].(json.Number)
+	msg.Timestamp, _ = strconv.ParseInt(string(timestamp), 10, 64)
 	msg.Network, _ = mp["network"].(string)
 	msg.Channel, _ = mp["channel"].(string)
 	msg.Sender, _ = mp["sender"].(string)
@@ -136,7 +143,9 @@ func ParseNetData(obj interface{}) (msg NetData) {
 	msg.Realname, _ = mp["realname"].(string)
 	msg.Nick, _ = mp["nick"].(string)
 	msg.IP, _ = mp["ip"].(string)
-	msg.Port, _ = mp["port"].(uint16)
+	port, _ := mp["port"].(json.Number)
+	portuint64, _ := strconv.ParseUint(string(port), 10, 16)
+	msg.Port = uint16(portuint64)
 	msg.SSL, _ = mp["ssl"].(bool)
 	msg.Connected, _ = mp["connected"].(bool)
 	return
@@ -234,7 +243,8 @@ func ParseWhoisData(obj interface{}) (msg WhoisData) {
 	msg.Away, _ = mp["away"].(string)
 	msg.Server, _ = mp["server"].(string)
 	msg.ServerInfo, _ = mp["server-info"].(string)
-	msg.IdleTime, _ = mp["idle"].(int64)
+	idle, _ := mp["idle"].(json.Number)
+	msg.IdleTime, _ = strconv.ParseInt(string(idle), 10, 64)
 	msg.SecureConn, _ = mp["secure-connection"].(bool)
 	msg.Operator, _ = mp["operator"].(bool)
 	return
@@ -245,8 +255,17 @@ type DeleteMessage int64
 
 // ParseDeleteMessage parses a DeleteMessage object from a generic object
 func ParseDeleteMessage(obj interface{}) (msg DeleteMessage) {
-	mp, _ := obj.(int64)
-	return DeleteMessage(mp)
+	switch v := obj.(type) {
+	case json.Number:
+		i, _ := strconv.ParseInt(string(v), 10, 64)
+		return DeleteMessage(i)
+	case int:
+		return DeleteMessage(v)
+	case int64:
+		return DeleteMessage(v)
+	default:
+		return 0
+	}
 }
 
 // OpenCloseChannel contains information about which channel to close
@@ -356,7 +375,8 @@ func ParseChanData(obj interface{}) (msg ChanData) {
 	msg.Userlist, _ = mp["userlist"].([]string)
 	msg.Topic, _ = mp["topic"].(string)
 	msg.TopicSetBy, _ = mp["topicsetby"].(string)
-	msg.TopicSetAt, _ = mp["topicsetat"].(int64)
+	topicsetat, _ := mp["topicsetat"].(json.Number)
+	msg.TopicSetAt, _ = strconv.ParseInt(string(topicsetat), 10, 64)
 
 	ml, _ := mp["modes"].([]interface{})
 	msg.Modelist = make([]ModelistEntry, len(ml))
