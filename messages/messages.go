@@ -165,7 +165,11 @@ func ParseChanList(obj interface{}) (msg ChanList) {
 	}
 
 	msg.Network, _ = mp["network"].(string)
-	msg.List, _ = mp["nick"].([]string)
+	list, _ := mp["nick"].([]interface{})
+	msg.List = make([]string, len(list))
+	for i, lo := range list {
+		msg.List[i], _ = lo.(string)
+	}
 	return
 }
 
@@ -372,7 +376,13 @@ func ParseChanData(obj interface{}) (msg ChanData) {
 
 	msg.Network, _ = mp["network"].(string)
 	msg.Name, _ = mp["name"].(string)
-	msg.Userlist, _ = mp["userlist"].([]string)
+
+	list, _ := mp["userlist"].([]interface{})
+	msg.Userlist = make([]string, len(list))
+	for i, lo := range list {
+		msg.Userlist[i], _ = lo.(string)
+	}
+
 	msg.Topic, _ = mp["topic"].(string)
 	msg.TopicSetBy, _ = mp["topicsetby"].(string)
 	topicsetat, _ := mp["topicsetat"].(json.Number)
