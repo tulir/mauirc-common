@@ -165,7 +165,7 @@ func ParseChanList(obj interface{}) (msg ChanList) {
 	}
 
 	msg.Network, _ = mp["network"].(string)
-	list, _ := mp["nick"].([]interface{})
+	list, _ := mp["list"].([]interface{})
 	msg.List = make([]string, len(list))
 	for i, lo := range list {
 		msg.List[i], _ = lo.(string)
