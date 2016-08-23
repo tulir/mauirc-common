@@ -37,6 +37,7 @@ var (
 	InvalidCredentials = Create(http.StatusUnauthorized, "invalidcredentials", "Invalid username or password", "")
 	InvalidResetToken  = Create(http.StatusUnauthorized, "invalidresettoken", "Invalid or expired password reset token", "")
 	UserNotFound       = Create(http.StatusNotFound, "usernotfound", "The given email is not in use", "")
+	UserNotActivated   = Create(http.StatusNotFound, "usernotactivated", "The given email has not been verified", "Check your spam folder too")
 	NetworkNotFound    = Create(http.StatusNotFound, "networknotfound", "You don't have a network with the given name", "")
 	ScriptNotFound     = Create(http.StatusNotFound, "scriptnotfound", "You don't have a script with the given name", "")
 	NotAuthenticated   = Create(http.StatusUnauthorized, "notauthenticated", "You have not logged in", "Try logging in using /auth/login")
